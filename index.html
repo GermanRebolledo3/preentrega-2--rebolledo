@@ -1,17 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link  href="/css/style.css">
-    <title>Pagina con js</title>
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>lista de contactos</title>
 </head>
 <body>
-<h1>lista de alumnos</h1>
-      <script src="./js/main.js">
-      </script>
-</body>
+    <div class="contenedor">
+        <h2>lista de contactos</h2>
+        <div class="mb-5">
+            <div class="row">
+                <div class="form-grupo col-md-6 mb-3">
+                    <label for="name">Nombre</label>
+                    <input type="text" name="nombre" class="form-control" id="nombre" placeholder="Ingrese el nombre">
+                </div>
+                <div class="form-grupo col-md-6 mb-3">
+                    <label for="edad">Edad</label>
+                    <input type="text" name="edad" class="form-control" id="edad" placeholder="Ingrese su edad">
+                </div>
+                <div class="form-grupo col-md-6 mb-3">
+                    <label for="direccion">Direccion</label>
+                    <input type="text" name="direccion" class="form-control" id="direccion" placeholder="Ingrese su direccion">
+                </div>
+                <div class="form-grupo col-md-6 mb-3">
+                    <label for="mail">Mail</label>
+                    <input type="text" name="mail" class="form-control" id="mail" placeholder="Ingrese su email">
+                </div>
+               
+                <div class="col-ig-12 mt-5">
+                    <button class="btn btn-success" id="submit" onclick="addData()" >Enviar</button>
+                    <button class="btn btn-primary" id="update">Actualizar</button>
+                </div>
+            </div>
 
-</html> 	
+        </div>
+    <hr>
+    <div class="row m5-5">
+        <div class="col-12">
+            <table class="table table-bordered" id="TablaDeResultados">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Edad</th>
+                        <th>Direccion</th>
+                        <th>Mail</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html> 
