@@ -1,0 +1,104 @@
+[
+    {
+        "id": "sofa-1",
+        "titulo": "sillones modernos",
+        "imagen": "./img/juegodesillones.jpg",
+        "categoria": {
+            "nombre": "juego de sillones",
+            "id": "juegodesillones"
+        },
+        "precio": 120000
+    },
+    {
+        "id": "sofa-2",
+        "titulo": "sofas de un cuerpo",
+        "imagen": "./img/juegodesillones1cuerpo.jpg",
+        "categoria": {
+            "nombre": "juego de sillones",
+            "id": "juegodesillones"
+        },
+        "precio": 45000
+    },
+    {
+        "id": "sofa-3",
+        "titulo": "sofa blanco",
+        "imagen": "./img/juegodesillonesblanco.jpg",
+        "categoria": {
+            "nombre": "juego de sillones",
+            "id": "juegodesillones"
+        },
+        "precio": 130000
+    },
+    {
+        "id": "silla-1",
+        "titulo": "silla vintage",
+        "imagen": "./img/sillasimple.jpg",
+        "categoria": {
+            "nombre": "sillas",
+            "id": "sillas"
+        },
+        "precio": 6000
+    },
+    {
+        "id": "silla-2",
+        "titulo": "sillon de un cuerpo",
+        "imagen": "./img/sillon1cuerpo.jpg",
+        "categoria": {
+            "nombre": "sillas",
+            "id": "sillas"
+        },
+        "precio": 8000
+    },
+
+    {
+        "id": "grande-1",
+        "titulo": "sillon marron",
+        "imagen": "./img/sillon3cuerposmarron.jpg",
+        "categoria": {
+            "nombre": "Sillones Grandes",
+            "id": "sillonesgrandes"
+        },
+        "precio": 57000
+    },
+    {
+        "id": "sofa-4",
+        "titulo": "sillones vintage",
+        "imagen": "./img/sillones1cuerpo.jpg",
+        "categoria": {
+            "nombre": "juego de sillones",
+            "id": "juegodesillones"
+        },
+        "precio": 40000
+    },
+    {
+        "id": "sofa-5",
+        "titulo": "sillon clasico",
+        "imagen": "./img/sillonesclasicoverde.jpg",
+        "categoria": {
+            "nombre": "juego de sillones",
+            "id": "juegodesillones"
+        },
+        "precio": 70000
+    },
+    {
+        "id": "sofa-6",
+        "titulo": "sillones clasicos",
+        "imagen": "./img/sillonesclasicos.jpg",
+        "categoria": {
+            "nombre": "juego de sillones",
+            "id": "juegodesillones"
+        },
+        "precio": 75000
+    },
+    {
+        "id": "silla-3",
+        "titulo": "sllon futurista",
+        "imagen": "./img/sillonesfuturistas.jpg",
+        "categoria": {
+            "nombre": "sillas",
+            "id": "sillas"
+        },
+        "precio": 56000
+    }
+  
+]

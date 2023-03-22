@@ -1,152 +1,119 @@
-//form de validacion
-function validateform(){
-    var nombre = document.getElementById("nombre").value;
-    var edad = document.getElementById("edad").value;
-    var direccion = document.getElementById("direccion").value;
-    var mail = document.getElementById("mail").value;
-    
-if(nombre == ""){
-    alert("Ingrese un nombre")
-    return false;
-}
-if(edad == ""){
-    alert("Ingrese una edad")
-    return false;
-}
-else if (edad < 1){
-    alert("La edad no puede ser menor de 1 año")
-    return false;
-}
-if (direccion ==""){
-    alert("Indique su direccion")
-    return false;
-}
-if (mail ==""){
-    alert("Ingrese su email")
-    return false;
-}else if(!mail.includes("@")){
-    alert("Ingrese un mail valido")
-    return false;
-}
-return true;
-}
-//function para mostrar la data
-function showData(){
-    var lista ;
-    
-    if(localStorage.getItem("lista")== null){
-        lista = [];
-    }
-    else{
-        lista = JSON.parse(localStorage.getItem("lista"))
-    }
-    var html = "";
+let productos = [];
 
-    lista .forEach( function(element, index )  {
-        html += "<tr>"
-        html += "<td>" + element.nombre + "<td>";
-        html += "<td>" + element.edad + "<td>";
-        html += "<td>" + element.mail + "<td>";
-        html += "<td>" + element.direccion + "<td>";
-        html += '<td>  <button onclick="deleteData ('+ index +')"class="btn btn-danger">Delete</button> <button onclick="updateData ('+ index +')"class="btn btn-warning m-2">Editar</button></td>';
-       
-        html +="</tr>";
-        
-    });
-    document.querySelector("#TablaDeResultados tbody").innerHTML = html;
+fetch("./js/productos.json")
+    .then(response => response.json())
+    .then(data => {
+        productos = data;
+        cargarProductos(productos);
+    })
+
+const contenedorProductos = document.querySelector("#contenedor-productos");
+const botonesCategorias = document.querySelectorAll(".boton-categoria");
+const tituloPrincipal = document.querySelector("#titulo-principal");
+let botonesAgregar = document.querySelectorAll(".producto-agregar");
+const numero = document.querySelector("#numerito");
+
+function cargarProductos(productosElegidos) {
+
+    contenedorProductos.innerHTML = "";
+
+    productosElegidos.forEach(producto => {
+        const div = document.createElement("div");
+        div.classList.add("producto");
+        div.innerHTML = `
+        <img class="producto-imagen" src="${producto.imagen}" alt="${producto.titulo}">
+        <div class="producto-detalles">
+            <h3 class="producto-titulo">${producto.titulo}</h3>
+            <p class="producto-precio">$${producto.precio}</p>
+            <button class="producto-agregar" id="${producto.id}">Agregar</button>
+        </div>
+    `;
+        contenedorProductos.append(div);
+    })
+
+    actualizarBotonesAgregar();
 }
- 
-document.onload = showData();
+cargarProductos(productos);
 
-//function para añadir data
+botonesCategorias.forEach(boton => {
+    boton.addEventListener("click", (e) => {
 
+        botonesCategorias.forEach(boton => boton.classList.remove("active"));
+        e.currentTarget.classList.add("active");
 
-function addData(){
-    
-    if(validateform() == true){
-        var nombre = document.getElementById("nombre").value;
-        var edad = document.getElementById("edad").value;
-        var direccion = document.getElementById("direccion").value;
-        var mail = document.getElementById("mail").value;
+        if (e.currentTarget.id != "todos"){
+            const productoCategoria = productos.find(producto => producto.categoria.id === e.currentTarget.id);
+            tituloPrincipal.innerText = productoCategoria.categoria.nombre;
 
-        var lista;
-        if(localStorage.getItem("lista") == null){
-            lista = [];
-        }else {
-            lista = JSON.parse(localStorage.getItem("lista"));
+        const productosBoton = productos.filter(producto => producto.categoria.id === e.currentTarget.id)
+        cargarProductos(productosBoton);
+        } else {
+            tituloPrincipal.innerText = "Todos los productos";
+            cargarProductos(productos)
         }
-        lista.push({
-            nombre: nombre ,
-            edad: edad ,
-            direccion: direccion ,
-            mail: mail ,
-        });
+    });
+})
 
-        localStorage.setItem("lista",JSON.stringify(lista));
-        showData();
-        document.getElementById("nombre").value = "";
-        document.getElementById("edad").value = "";
-        document.getElementById("direccion").value = "";
-        document.getElementById("mail").value = "";
-    }
+
+function actualizarBotonesAgregar() {
+    botonesAgregar = document.querySelectorAll(".producto-agregar");
+
+    botonesAgregar.forEach(boton => {
+        boton.addEventListener("click", agregarAlCarrito);
+    });
 }
 
-//function para eliminar data del local
+let productosEnCarrito;
 
-function deleteData (index){
-    var lista;
-    if(localStorage.getItem("lista")== null){
-        lista = [];
-    }
-    else{
-        lista = JSON.parse(localStorage.getItem("lista"))
-    }
-    lista.splice(index, 1);
-    localStorage.setItem("lista", JSON.stringify(lista));
-    showData();
+let productosEnCarritoLS = localStorage.getItem("productos-en-carrito");
+
+if (productosEnCarritoLS) {
+    productosEnCarrito = JSON.parse(productosEnCarritoLS);
+    actualizarNumerito();
+} else {
+    productosEnCarrito = [];
 }
 
-//function para editar data
 
-function updateData(index){
-    document.getElementById("submit").style.display = "none";
-    document.getElementById("update").style.display = "block";
-   
-    var lista;
-    if(localStorage.getItem("lista")== null){
-        lista = [];
+function agregarAlCarrito(e) {
+
+    Toastify({
+        text: "Producto agregado",
+        duration: 3000,
+        close: true,
+        gravity: "top",
+        position: "right", 
+        stopOnFocus: true, 
+        style: {
+            background: "linear-gradient(to right)",
+            borderRadius: "2rem",
+            textTransform: "uppercase",
+            fontSize: ".80rem"
+        },
+        offset: {
+            x: '1.5rem',
+            y: '1.5rem' 
+            },
+        onClick: function(){}
+        }).showToast();
+
+    const idBoton = e.currentTarget.id;
+    const productoAgregado = productos.find(producto => producto.id === idBoton);
+
+    if(productosEnCarrito.some(producto => producto.id === idBoton)) {
+        const index = productosEnCarrito.findIndex(producto => producto.id === idBoton);
+        productosEnCarrito[index].cantidad++;
+    } else {
+        productoAgregado.cantidad = 1;
+        productosEnCarrito.push(productoAgregado);
     }
-    else{
-        lista = JSON.parse(localStorage.getItem("lista"))
-    }
-    lista.splice(index, 1);
-    localStorage.setItem("lista", JSON.stringify(lista));
-    showData();
 
-    document.getElementById("nombre").value = lista[index].nombre;
-    document.getElementById("edad").value = lista[index].edad;
-    document.getElementById("direccion").value = lista[index].direccion;
-    document.getElementById("mail").value = lista[index].mail;
+    actualizarNumerito();
 
-    document.querySelector("#update").onclick = function()
-{
-if(validateform()== true){
-    lista[index].nombre = document.getElementById("nombre").value;
-    lista[index].edad = document.getElementById("edad").value;
-    lista[index].direccion = document.getElementById("direccion").value;
-    lista[index].mail = document.getElementById("mail").value;
-
-    localStorage.setItem("lista", JSON.stringify(lista));
-    showData();
-    
-    document.getElementById("nombre").value = "";
-    document.getElementById("edad").value = "";
-    document.getElementById("direccion").value = "";
-    document.getElementById("mail").value = "";
-    
-    
-        document.getElementById("submit").style.display = "block";
-        document.getElementById("update").style.display = "none";
+    localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
 }
-} 
+
+function actualizarNumerito() {
+    let nuevoNumerito = productosEnCarrito.reduce((acc, producto) => acc + producto.cantidad, 0);
+    numerito.innerText = nuevoNumerito;
 }
